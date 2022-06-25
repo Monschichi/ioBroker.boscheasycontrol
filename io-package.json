@@ -1,0 +1,100 @@
+{
+    "common": {
+        "name": "bosch",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Bosch EasyControl",
+        "titleLang": {
+            "en": "Bosch EasyControl",
+            "de": "Bosch Easy Control",
+            "ru": "Бош EasyControl",
+            "pt": "Bosch EasyControl",
+            "nl": "Bosch EasyControl",
+            "fr": "Bosch Easy Control",
+            "it": "Bosch Easy Control",
+            "es": "Easy Control de Bosch",
+            "pl": "Bosch EasyControl",
+            "zh-cn": "博世 EasyControl"
+        },
+        "desc": {
+            "en": "integration of Bosch EasyControl CT200 devices",
+            "de": "Integration von Bosch EasyControl CT200 Geräten",
+            "ru": "интеграция устройств Bosch EasyControl CT200",
+            "pt": "integração de dispositivos Bosch EasyControl CT200",
+            "nl": "integratie van Bosch EasyControl CT200-apparaten",
+            "fr": "intégration des appareils Bosch EasyControl CT200",
+            "it": "integrazione dei dispositivi Bosch EasyControl CT200",
+            "es": "integración de dispositivos Bosch EasyControl CT200",
+            "pl": "integracja urządzeń Bosch EasyControl CT200",
+            "zh-cn": "博世 EasyControl CT200 设备的集成"
+        },
+        "authors": [
+            "Monschichi <monschichi@gmail.com>"
+        ],
+        "keywords": [
+            "bosch",
+            "easycontrol",
+            "ct200"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "bosch.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.bosch/main/admin/bosch.png",
+        "readme": "https://github.com/Monschichi/ioBroker.bosch/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "climate-control",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "materialize": true,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}
