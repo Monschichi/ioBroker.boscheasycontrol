@@ -1,6 +1,6 @@
 {
     "common": {
-        "name": "bosch",
+        "name": "boscheasycontrol",
         "version": "0.0.1",
         "news": {
             "0.0.1": {
@@ -52,10 +52,10 @@
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
-        "icon": "bosch.png",
+        "icon": "boscheasycontrol.png",
         "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.bosch/main/admin/bosch.png",
-        "readme": "https://github.com/Monschichi/ioBroker.bosch/blob/main/README.md",
+        "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.boscheasycontrol/main/admin/boscheasycontrol.png",
+        "readme": "https://github.com/Monschichi/ioBroker.boscheasycontrol/blob/main/README.md",
         "loglevel": "info",
         "mode": "daemon",
         "type": "climate-control",
@@ -65,14 +65,24 @@
         "materialize": true,
         "dependencies": [
             {
-                "js-controller": ">=2.0.0"
+                "js-controller": ">=3.3.0"
             }
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "serial": "",
+        "accesskey": "",
+        "password": ""
     },
+    "protectedNative": [
+        "serial",
+        "accesskey",
+        "password"
+    ],
+    "encryptedNative": [
+        "accesskey",
+        "password"
+    ],
     "objects": [],
     "instanceObjects": [
         {

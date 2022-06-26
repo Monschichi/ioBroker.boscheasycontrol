@@ -8,40 +8,52 @@
 'use strict';
 
 systemDictionary = {
-    'bosch adapter settings': {
-        'en': 'Adapter settings for bosch',
-        'de': 'Adaptereinstellungen für bosch',
-        'ru': 'Настройки адаптера для bosch',
-        'pt': 'Configurações do adaptador para bosch',
-        'nl': 'Adapterinstellingen voor bosch',
-        'fr': "Paramètres d'adaptateur pour bosch",
-        'it': "Impostazioni dell'adattatore per bosch",
-        'es': 'Ajustes del adaptador para bosch',
-        'pl': 'Ustawienia adaptera dla bosch',
-        'zh-cn': 'bosch的适配器设置'
+    'boscheasycontrol adapter settings': {
+        'en': 'Adapter settings for boscheasycontrol',
+        'de': 'Adaptereinstellungen für boscheasycontrol',
+        'ru': 'Настройки адаптера для boscheasycontrol',
+        'pt': 'Configurações do adaptador para boscheasycontrol',
+        'nl': 'Adapterinstellingen voor boscheasycontrol',
+        'fr': "Paramètres d'adaptateur pour boscheasycontrol",
+        'it': "Impostazioni dell'adattatore per boscheasycontrol",
+        'es': 'Ajustes del adaptador para boscheasycontrol',
+        'pl': 'Ustawienia adaptera dla boscheasycontrol',
+        'zh-cn': 'boscheasycontrol的适配器设置'
     },
-    'option1': {
-        'en': 'option1',
-        'de': 'Option 1',
-        'ru': 'Опция 1',
-        'pt': 'Opção 1',
-        'nl': 'Optie 1',
-        'fr': 'Option 1',
-        'it': 'opzione 1',
-        'es': 'Opción 1',
-        'pl': 'opcja 1',
-        'zh-cn': '选项1'
+    'serial': {
+        'en': 'Serial',
+        'de': 'Serial',
+        'ru': 'Serial',
+        'pt': 'Serial',
+        'nl': 'Serial',
+        'fr': 'Serial',
+        'it': 'Serial',
+        'es': 'Serial',
+        'pl': 'Serial',
+        'zh-cn': 'Serial'
     },
-    'option2': {
-        'en': 'option2',
-        'de': 'Option 2',
-        'ru': 'вариант 2',
-        'pt': 'opção 2',
-        'nl': 'Optie 2',
-        'fr': 'Option 2',
-        'it': 'opzione 2',
-        'es': 'opcion 2',
-        'pl': 'Opcja 2',
-        'zh-cn': '选项2'
+    'accesskey': {
+        'en': 'Access Key',
+        'de': 'Access Key',
+        'ru': 'Access Key',
+        'pt': 'Access Key',
+        'nl': 'Access Key',
+        'fr': 'Access Key',
+        'it': 'Access Key',
+        'es': 'Access Key',
+        'pl': 'Access Key',
+        'zh-cn': 'Access Key'
+    },
+    'password': {
+        'en': 'Password',
+        'de': 'Password',
+        'ru': 'Password',
+        'pt': 'Password',
+        'nl': 'Password',
+        'fr': 'Password',
+        'it': 'Password',
+        'es': 'Password',
+        'pl': 'Password',
+        'zh-cn': 'Password'
     }
 };

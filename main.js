@@ -9,9 +9,9 @@
 const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
-// const fs = require("fs");
+const { EasyControlClient } = require('bosch-xmpp');
 
-class Bosch extends utils.Adapter {
+class Boscheasycontrol extends utils.Adapter {
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -19,13 +19,17 @@ class Bosch extends utils.Adapter {
     constructor(options) {
         super({
             ...options,
-            name: 'bosch',
+            name: 'boscheasycontrol',
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         // this.on('objectChange', this.onObjectChange.bind(this));
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
+
+        // own variables
+        this.initializing = false;
+        this.timers = [];
     }
 
     /**
@@ -39,53 +43,169 @@ class Bosch extends utils.Adapter {
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
+        this.log.debug('config serial: ' + this.config.serial);
+        this.log.debug('config accesskey: ' + this.config.accesskey);
+        this.log.debug('config password: ' + this.config.password);
 
-        /*
-        For every state in the system there has to be also an object of type state
-        Here a simple template for a boolean variable named "testVariable"
-        Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-        */
-        await this.setObjectNotExistsAsync('testVariable', {
+        this.client = EasyControlClient({
+            serialNumber: this.config.serial,
+            accessKey: this.config.accesskey,
+            password: this.config.password,
+        });
+        this.initializing = true;
+        if (!(this.config.serial && this.config.accesskey && this.config.password)) {
+            this.log.error('Serial, Access Key and Password needs to be defined for this adapter to work.');
+        } else {
+            this.log.debug('connecting');
+            try {
+                await this.client.connect();
+            } catch (e) {
+                this.log.error(e.stack || e);
+            }
+            this.log.debug('connected');
+            this.setState('info.connection', true, true);
+            await this.processurl('/');
+            this.initializing = false;
+        }
+    }
+
+    /**
+     * @param {string} path
+     */
+    async processurl(path) {
+        this.log.debug('processing url: ' + path);
+        let data;
+        try {
+            data = await this.client.get(path);
+        } catch (e) {
+            this.log.error(e.stack || e);
+            return;
+        }
+        this.log.debug('got data: ' + JSON.stringify(data));
+        if (data.type === 'refEnum') {
+            const s = data.id.split('/');
+            if (s.length === 3 && /[0-9]$/.test(s[2])) {
+                this.log.debug('creating device for ' + data.id);
+                await this.setObjectAsync(data.id.substring(1).split('/').join('.'), {
+                    type: 'device',
+                    common: {
+                        name: data.id.split('/')[-1],
+                    },
+                    native: {}
+                });
+            }
+            for (const ref in data.references) {
+                await this.processurl(data.references[ref].id);
+            }
+        }
+        if ('value' in data) {
+            await this.processdata(data);
+        }
+    }
+
+    /**
+     * @param {{ id: string; type: string; writeable: string; recordable: string; value: string | number | object; used: string; unitOfMeasure: string; minValue: string; maxValue: string; stepSize: string; }} data
+     */
+    async processdata(data) {
+        this.log.debug('Data: id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + data.value + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
+        const name = data.id.substring(1).split('/').join('.');
+        let mytype = null;
+        let value = null;
+        switch (data.type) {
+            case 'stringValue':
+            case 'stringArray':
+                mytype = 'string';
+                if (name.endsWith('.name') || name.endsWith('.email') || name.endsWith('.phone')) {
+                    value = atob(String(data.value));
+                } else {
+                    value = data.value;
+                }
+                break;
+            case 'floatValue':
+                mytype = 'number';
+                value = data.value;
+                break;
+            case 'systeminfo':
+                mytype = 'string';
+                value = JSON.stringify(data.value);
+                break;
+            case 'zoneConfigArray':
+            case 'zoneArray':
+            case 'deviceArray':
+            case 'programArray':
+                mytype = 'string';
+                for (const i in data.value) {
+                    data.value[i].name = atob(data.value[i].name);
+                }
+                value = JSON.stringify(data.value);
+                break;
+            case 'addressInfo':
+                mytype = 'string';
+                for (const i in data.value) {
+                    for (const [key, value] of Object.entries(data.value[i])) {
+                        data.value[i][key] = atob(value);
+                    }
+                }
+                value = JSON.stringify(data.value);
+                break;
+            case 'dhwProgram':
+            case 'energyRecordings':
+            case 'eventArray':
+            case 'notificationStruct':
+            case 'boostShortcutStruct':
+            case 'boostZoneStruct':
+            case 'errorList':
+            case 'dayProgram':
+            case 'weekProgram':
+            case 'autoAwayArray':
+                mytype = 'string';
+                value = JSON.stringify(data.value);
+                break;
+        }
+        if (mytype) {
+            if (this.initializing) {
+                await this.setObjectAsync(name, {
+                    type: 'state',
+                    common: {
+                        name: data.id.split('/')[-1],
+                        read: true,
+                        write: Boolean(data.writeable),
+                        type: mytype,
+                        role: 'value',
+                        min: data.minValue,
+                        max: data.maxValue,
+                        step: data.stepSize,
+                        unit: data.unitOfMeasure,
+                    },
+                    native: {}
+                });
+            }
+            await this.setStateAsync(name, value, true);
+        } else {
+            this.log.warn('got unknown data with id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + JSON.stringify(data.value) + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
+        }
+    }
+
+    async run() {
+        const data = await this.client.get('/');
+        this.log.debug('got data: ' + data);
+
+        /*await this.setObjectNotExistsAsync('testVariable', {
             type: 'state',
             common: {
                 name: 'testVariable',
                 type: 'boolean',
                 role: 'indicator',
                 read: true,
-                write: true,
+                write: false,
             },
             native: {},
         });
 
-        // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
-        // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-        // this.subscribeStates('lights.*');
-        // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-        // this.subscribeStates('*');
-
-        /*
-            setState examples
-            you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-        */
-        // the variable testVariable is set to true as command (ack=false)
-        await this.setStateAsync('testVariable', true);
-
         // same thing, but the value is flagged "ack"
         // ack should be always set to true if the value is received from or acknowledged from the target system
         await this.setStateAsync('testVariable', { val: true, ack: true });
-
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-
-        // examples for the checkPassword/checkGroup functions
-        let result = await this.checkPasswordAsync('admin', 'iobroker');
-        this.log.info('check user admin pw iobroker: ' + result);
-
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info('check group user admin group admin: ' + result);
+        */
     }
 
     /**
@@ -99,6 +219,11 @@ class Bosch extends utils.Adapter {
             // clearTimeout(timeout2);
             // ...
             // clearInterval(interval1);
+            this.client.end();
+            for (const timer in this.timers) {
+                this.clearInterval(this.timers[timer]);
+            }
+            this.setState('info.connection', false, true);
 
             callback();
         } catch (e) {
@@ -163,8 +288,8 @@ if (require.main !== module) {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
-    module.exports = (options) => new Bosch(options);
+    module.exports = (options) => new Boscheasycontrol(options);
 } else {
     // otherwise start the instance directly
-    new Bosch();
+    new Boscheasycontrol();
 }

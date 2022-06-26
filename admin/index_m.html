@@ -1,7 +1,5 @@
 <html>
-
 <head>
-
     <!-- Load ioBroker scripts and styles-->
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
@@ -69,22 +67,24 @@
 
         <div class="row">
             <div class="col s12 m4 l2">
-                <img src="bosch.png" class="logo">
+                <img src="boscheasycontrol.png" class="logo">
             </div>
         </div>
 
-        <!-- Put your content here -->
-
-        <!-- For example columns with settings: -->
         <div class="row">
             <div class="col s6 input-field">
-                <input type="checkbox" class="value" id="option1" />
-                <label for="option1" class="translate">option1</label>
+                <input type="number" class="value" id="serial" />
+                <label for="serial" class="translate">serial</label>
             </div>
 
             <div class="col s6 input-field">
-                <input type="text" class="value" id="option2" />
-                <label for="option2" class="translate">option2</label>
+                <input type="text" class="value" id="accesskey" />
+                <label for="accesskey" class="translate">accesskey</label>
+            </div>
+
+            <div class="col s6 input-field">
+                <input type="text" class="value" id="password" />
+                <label for="password" class="translate">password</label>
             </div>
         </div>
 

@@ -1,17 +1,16 @@
-![Logo](admin/bosch.png)
-# ioBroker.bosch
+![Logo](admin/boscheasycontrol.png)
+# ioBroker.boscheasycontrol
 
-[![NPM version](https://img.shields.io/npm/v/iobroker.bosch.svg)](https://www.npmjs.com/package/iobroker.bosch)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.bosch.svg)](https://www.npmjs.com/package/iobroker.bosch)
-![Number of Installations](https://iobroker.live/badges/bosch-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/bosch-stable.svg)
-[![Dependency Status](https://img.shields.io/david/Monschichi/iobroker.bosch.svg)](https://david-dm.org/Monschichi/iobroker.bosch)
+[![NPM version](https://img.shields.io/npm/v/ioBroker.boscheasycontrol.svg)](https://www.npmjs.com/package/ioBroker.boscheasycontrol)
+[![Downloads](https://img.shields.io/npm/dm/ioBroker.boscheasycontrol.svg)](https://www.npmjs.com/package/ioBroker.boscheasycontrol)
+![Number of Installations](https://iobroker.live/badges/boscheasycontrol-installed.svg)
+![Current version in stable repository](https://iobroker.live/badges/boscheasycontrol-stable.svg)
 
-[![NPM](https://nodei.co/npm/iobroker.bosch.png?downloads=true)](https://nodei.co/npm/iobroker.bosch/)
+[![NPM](https://nodei.co/npm/ioBroker.boscheasycontrol.png?downloads=true)](https://nodei.co/npm/ioBroker.boscheasycontrol/)
 
-**Tests:** ![Test and Release](https://github.com/Monschichi/ioBroker.bosch/workflows/Test%20and%20Release/badge.svg)
+**Tests:** ![Test and Release](https://github.com/Monschichi/ioBroker.boscheasycontrol/workflows/Test%20and%20Release/badge.svg)
 
-## bosch adapter for ioBroker
+## boscheasycontrol adapter for ioBroker
 
 integration of Bosch EasyControl CT200 devices
 
@@ -21,7 +20,7 @@ This section is intended for the developer. It can be deleted later
 ### Getting started
 
 You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.bosch`
+1. Create a new repository on GitHub with the name `ioBroker.boscheasycontrol`
 1. Initialize the current folder as a new git repository:  
     ```bash
     git init -b main
@@ -30,14 +29,14 @@ You are almost done, only a few steps left:
     ```
 1. Link your local repository with the one on GitHub:  
     ```bash
-    git remote add origin https://github.com/Monschichi/ioBroker.bosch
+    git remote add origin https://github.com/Monschichi/ioBroker.boscheasycontrol
     ```
 
 1. Push all files to the GitHub repo:  
     ```bash
     git push origin main
     ```
-1. Add a new secret under https://github.com/Monschichi/ioBroker.bosch/settings/secrets. It must be named `AUTO_MERGE_TOKEN` and contain a personal access token with push access to the repository, e.g. yours. You can create a new token under https://github.com/settings/tokens.
+1. Add a new secret under https://github.com/Monschichi/ioBroker.boscheasycontrol/settings/secrets. It must be named `AUTO_MERGE_TOKEN` and contain a personal access token with push access to the repository, e.g. yours. You can create a new token under https://github.com/settings/tokens.
 
 1. Head over to [main.js](main.js) and start programming!
 
