@@ -23,7 +23,7 @@
     "set-interval-async": "^2.0.3"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^2.2.2",
+    "@alcalzone/release-script": "^3.5.9",
     "@iobroker/adapter-dev": "^1.0.0",
     "@iobroker/dev-server": "^0.5.0",
     "@iobroker/testing": "^3.0.2",
