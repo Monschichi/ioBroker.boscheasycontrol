@@ -62,17 +62,28 @@
         "compact": true,
         "connectionType": "cloud",
         "dataSource": "poll",
-        "materialize": true,
         "dependencies": [
             {
-                "js-controller": ">=3.3.0"
+                "js-controller": ">=4.0.0"
             }
-        ]
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=6.0.0"
+            }
+        ],
+        "adminUI": {
+            "config": "json",
+            "custom": "json"
+        },
+        "preserveSettings": "custom",
+        "supportCustoms": true
     },
     "native": {
         "serial": "",
         "accesskey": "",
-        "password": ""
+        "password": "",
+        "refresh": 3600
     },
     "protectedNative": [
         "serial",
@@ -80,7 +91,6 @@
         "password"
     ],
     "encryptedNative": [
-        "accesskey",
         "password"
     ],
     "objects": [],

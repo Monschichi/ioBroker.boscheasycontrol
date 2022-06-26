@@ -73,7 +73,8 @@ class Boscheasycontrol extends utils.Adapter {
      * @param {string} path
      */
     async processurl(path) {
-        this.log.debug('processing url: ' + path);
+        // /devices/productLookup is not working, so skipping
+        if (path === '/devices/productLookup') { return; }
         let data;
         try {
             data = await this.client.get(path);
@@ -104,13 +105,13 @@ class Boscheasycontrol extends utils.Adapter {
     }
 
     /**
-     * @param {{ id: string; type: string; writeable: string; recordable: string; value: string | number | object; used: string; unitOfMeasure: string; minValue: string; maxValue: string; stepSize: string; }} data
+     * @param {{ id: string; type: string; writeable: string; recordable: string; value: string | number | object; used: string; unitOfMeasure: string; minValue: number; maxValue: number; stepSize: number; }} data
      */
     async processdata(data) {
         this.log.debug('Data: id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + data.value + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
         const name = data.id.substring(1).split('/').join('.');
-        let mytype = null;
-        let value = null;
+        let mytype;
+        let value;
         switch (data.type) {
             case 'stringValue':
             case 'stringArray':
@@ -164,21 +165,36 @@ class Boscheasycontrol extends utils.Adapter {
         }
         if (mytype) {
             if (this.initializing) {
-                await this.setObjectAsync(name, {
-                    type: 'state',
-                    common: {
-                        name: data.id.split('/')[-1],
-                        read: true,
-                        write: Boolean(data.writeable),
-                        type: mytype,
-                        role: 'value',
-                        min: data.minValue,
-                        max: data.maxValue,
-                        step: data.stepSize,
-                        unit: data.unitOfMeasure,
-                    },
-                    native: {}
-                });
+                if (mytype === 'string') {
+                    await this.setObjectAsync(name, {
+                        type: 'state',
+                        common: {
+                            name: data.id.split('/')[-1],
+                            type: 'string',
+                            read: true,
+                            write: Boolean(data.writeable),
+                            role: 'value',
+                            unit: data.unitOfMeasure,
+                        },
+                        native: {}
+                    });
+                } else if (mytype === 'number') {
+                    await this.setObjectAsync(name, {
+                        type: 'state',
+                        common: {
+                            name: data.id.split('/')[-1],
+                            type: 'number',
+                            read: true,
+                            write: Boolean(data.writeable),
+                            role: 'value',
+                            min: Number(data.minValue),
+                            max: Number(data.maxValue),
+                            step: Number(data.stepSize),
+                            unit: data.unitOfMeasure,
+                        },
+                        native: {}
+                    });
+                }
             }
             await this.setStateAsync(name, value, true);
         } else {

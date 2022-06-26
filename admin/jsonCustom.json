@@ -1,0 +1,15 @@
+{
+    "type": "panel",
+    "hidden": "!customObj._id.startsWith('boscheasycontrol.')",
+    "items": {
+        "refresh": {
+            "type": "number",
+            "simple": true,
+            "complex": true,
+            "label": "Refresh",
+            "help": "refresh interval in seconds",
+            "min": 0,
+            "default": 3600
+        }
+    }
+}
