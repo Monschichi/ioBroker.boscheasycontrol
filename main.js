@@ -10,6 +10,7 @@ const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
 const { EasyControlClient } = require('bosch-xmpp');
+const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/dynamic')
 
 class Boscheasycontrol extends utils.Adapter {
 
@@ -23,13 +24,13 @@ class Boscheasycontrol extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
+        this.on('objectChange', this.onObjectChange.bind(this));
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
 
         // own variables
         this.initializing = false;
-        this.timers = [];
+        this.timers = {};
     }
 
     /**
@@ -67,6 +68,7 @@ class Boscheasycontrol extends utils.Adapter {
             await this.processurl('/');
             this.initializing = false;
         }
+        await this.subscribeObjectsAsync('*');
     }
 
     /**
@@ -166,26 +168,26 @@ class Boscheasycontrol extends utils.Adapter {
         if (mytype) {
             if (this.initializing) {
                 if (mytype === 'string') {
-                    await this.setObjectAsync(name, {
+                    await this.setObjectNotExistsAsync(name, {
                         type: 'state',
                         common: {
                             name: data.id.split('/')[-1],
                             type: 'string',
                             read: true,
-                            write: Boolean(data.writeable),
+                            write: false, //Boolean(data.writeable),
                             role: 'value',
                             unit: data.unitOfMeasure,
                         },
                         native: {}
                     });
                 } else if (mytype === 'number') {
-                    await this.setObjectAsync(name, {
+                    await this.setObjectNotExistsAsync(name, {
                         type: 'state',
                         common: {
                             name: data.id.split('/')[-1],
                             type: 'number',
                             read: true,
-                            write: Boolean(data.writeable),
+                            write: false, //Boolean(data.writeable),
                             role: 'value',
                             min: Number(data.minValue),
                             max: Number(data.maxValue),
@@ -195,6 +197,8 @@ class Boscheasycontrol extends utils.Adapter {
                         native: {}
                     });
                 }
+                const obj = await this.getObjectAsync(name);
+                if (obj) { this.onObjectChange(obj._id, obj); }
             }
             await this.setStateAsync(name, value, true);
         } else {
@@ -202,26 +206,28 @@ class Boscheasycontrol extends utils.Adapter {
         }
     }
 
-    async run() {
-        const data = await this.client.get('/');
-        this.log.debug('got data: ' + data);
+    /**
+     * @param {string} name
+     * @param {number} interval
+     */
+    async starttimer(name, interval) {
+        if (name.endsWith('.info.connection')) { return; }
+        await this.stoptimer(name);
+        this.log.debug('starting timer for: ' + name + ' with interval: ' + interval);
+        const nslice = name.split('.');
+        const path = '/' + nslice.slice(2).join('/');
+        this.timers[name] = setIntervalAsync(this.processurl.bind(this, path), interval * 1000);
+    }
 
-        /*await this.setObjectNotExistsAsync('testVariable', {
-            type: 'state',
-            common: {
-                name: 'testVariable',
-                type: 'boolean',
-                role: 'indicator',
-                read: true,
-                write: false,
-            },
-            native: {},
-        });
-
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setStateAsync('testVariable', { val: true, ack: true });
-        */
+    /**
+     * @param {string} name
+     */
+    async stoptimer(name) {
+        if (name in this.timers) {
+            this.log.debug('stopping timer for: ' + name);
+            await clearIntervalAsync(this.timers[name]);
+            delete this.timers[name];
+        }
     }
 
     /**
@@ -236,8 +242,8 @@ class Boscheasycontrol extends utils.Adapter {
             // ...
             // clearInterval(interval1);
             this.client.end();
-            for (const timer in this.timers) {
-                this.clearInterval(this.timers[timer]);
+            for (const name in this.timers) {
+                this.stoptimer(name);
             }
             this.setState('info.connection', false, true);
 
@@ -249,20 +255,31 @@ class Boscheasycontrol extends utils.Adapter {
 
     // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
     // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  * @param {string} id
-    //  * @param {ioBroker.Object | null | undefined} obj
-    //  */
-    // onObjectChange(id, obj) {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-    // }
+    /**
+     * Is called if a subscribed object changes
+     * @param {string} id
+     * @param {ioBroker.Object | null | undefined} obj
+     */
+    async onObjectChange(id, obj) {
+        if (obj) {
+            // The object was changed
+            this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
+            if (obj.common.custom) {
+                if (obj.common.custom['boscheasycontrol.0']['enabled']) {
+                    await this.starttimer(id, obj.common.custom['boscheasycontrol.0']['refresh']);
+                } else {
+                    await this.stoptimer(id);
+                }
+            } else {
+                await this.stoptimer(id);
+            }
+        } else {
+            // The object was deleted
+            this.log.debug(`object ${id} deleted`);
+            await this.stoptimer(id);
+        }
+        this.log.debug('running timers: ' + Object.keys(this.timers));
+    }
 
     /**
      * Is called if a subscribed state changes

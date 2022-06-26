@@ -9,7 +9,7 @@
             "label": "Refresh",
             "help": "refresh interval in seconds",
             "min": 0,
-            "default": 3600
+            "default": 5
         }
     }
 }
