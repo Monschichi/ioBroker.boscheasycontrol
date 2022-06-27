@@ -69,6 +69,7 @@ class Boscheasycontrol extends utils.Adapter {
             this.initializing = false;
         }
         await this.subscribeObjectsAsync('*');
+        await this.subscribeStatesAsync('*');
     }
 
     /**
@@ -174,7 +175,7 @@ class Boscheasycontrol extends utils.Adapter {
                             name: data.id.split('/')[-1],
                             type: 'string',
                             read: true,
-                            write: false, //Boolean(data.writeable),
+                            write: Boolean(data.writeable),
                             role: 'value',
                             unit: data.unitOfMeasure,
                         },
@@ -187,7 +188,7 @@ class Boscheasycontrol extends utils.Adapter {
                             name: data.id.split('/')[-1],
                             type: 'number',
                             read: true,
-                            write: false, //Boolean(data.writeable),
+                            write: Boolean(data.writeable),
                             role: 'value',
                             min: Number(data.minValue),
                             max: Number(data.maxValue),
@@ -289,10 +290,17 @@ class Boscheasycontrol extends utils.Adapter {
     onStateChange(id, state) {
         if (state) {
             // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+            this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+            if (state.ack === false) {
+                const nslice = id.split('.');
+                const path = '/' + nslice.slice(2).join('/');
+                //const ret = this.client.put(path, state.val); // not tested
+                //this.log.debug('set state returned: ' + ret);
+                this.processurl(path);
+            }
         } else {
             // The state was deleted
-            this.log.info(`state ${id} deleted`);
+            this.log.debug(`state ${id} deleted`);
         }
     }
 
