@@ -8,8 +8,8 @@
             "complex": true,
             "label": "Refresh",
             "help": "refresh interval in seconds",
-            "min": 0,
-            "default": 5
+            "min": 1,
+            "default": 3600
         }
     }
 }
