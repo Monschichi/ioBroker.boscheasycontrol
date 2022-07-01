@@ -81,8 +81,7 @@
     "native": {
         "serial": "",
         "accesskey": "",
-        "password": "",
-        "refresh": 3600
+        "password": ""
     },
     "protectedNative": [
         "serial",

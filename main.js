@@ -10,7 +10,7 @@ const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
 const { EasyControlClient } = require('bosch-xmpp');
-const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/dynamic')
+const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/dynamic');
 
 class Boscheasycontrol extends utils.Adapter {
 
@@ -168,38 +168,58 @@ class Boscheasycontrol extends utils.Adapter {
         }
         if (mytype) {
             if (this.initializing) {
+                let common;
                 if (mytype === 'string') {
-                    await this.setObjectNotExistsAsync(name, {
-                        type: 'state',
-                        common: {
-                            name: data.id.split('/')[-1],
-                            type: 'string',
-                            read: true,
-                            write: Boolean(data.writeable),
-                            role: 'value',
-                            unit: data.unitOfMeasure,
-                        },
-                        native: {}
-                    });
+                    common = {
+                        name: data.id.split('/')[-1],
+                        type: 'string',
+                        read: true,
+                        write: Boolean(data.writeable),
+                        role: 'value',
+                        unit: data.unitOfMeasure,
+                        custom: {}
+                    };
                 } else if (mytype === 'number') {
-                    await this.setObjectNotExistsAsync(name, {
+                    common = {
+                        name: data.id.split('/')[-1],
+                        type: 'number',
+                        read: true,
+                        write: Boolean(data.writeable),
+                        role: 'value',
+                        min: Number(data.minValue),
+                        max: Number(data.maxValue),
+                        step: Number(data.stepSize),
+                        unit: data.unitOfMeasure,
+                        custom: {}
+                    };
+                } else {
+                    common = {
+                        name: data.id.split('/')[-1],
+                        type: 'string',
+                        read: true,
+                        write: Boolean(data.writeable),
+                        role: 'value',
+                        unit: data.unitOfMeasure,
+                        custom: {}
+                    };
+                }
+                common['custom'][this.name + '.' + this.instance] = {
+                    enabled: true,
+                    refresh: 3600
+                };
+                const obj = await this.getObjectAsync(name);
+                if (obj) {
+                    this.onObjectChange(obj._id, obj);
+                } else {
+                    this.log.debug('creating new object with: ' + JSON.stringify(common));
+                    await this.setObjectAsync(name, {
                         type: 'state',
-                        common: {
-                            name: data.id.split('/')[-1],
-                            type: 'number',
-                            read: true,
-                            write: Boolean(data.writeable),
-                            role: 'value',
-                            min: Number(data.minValue),
-                            max: Number(data.maxValue),
-                            step: Number(data.stepSize),
-                            unit: data.unitOfMeasure,
-                        },
+                        common: common,
                         native: {}
                     });
+                    const obj = await this.getObjectAsync(name);
+                    this.onObjectChange(obj._id, obj);
                 }
-                const obj = await this.getObjectAsync(name);
-                if (obj) { this.onObjectChange(obj._id, obj); }
             }
             await this.setStateAsync(name, value, true);
         } else {
@@ -265,9 +285,9 @@ class Boscheasycontrol extends utils.Adapter {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
-            if (obj.common.custom) {
-                if (obj.common.custom['boscheasycontrol.0']['enabled']) {
-                    await this.starttimer(id, obj.common.custom['boscheasycontrol.0']['refresh']);
+            if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
+                if (obj.common.custom[`${this.name}.${this.instance}`]['enabled']) {
+                    await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`]['refresh']);
                 } else {
                     await this.stoptimer(id);
                 }
