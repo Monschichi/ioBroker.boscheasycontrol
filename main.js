@@ -221,6 +221,7 @@ class Boscheasycontrol extends utils.Adapter {
                     this.onObjectChange(obj._id, obj);
                 }
             }
+            this.log.info('updating ' + name + ' to ' + value);
             await this.setStateAsync(name, value, true);
         } else {
             this.log.warn('got unknown data with id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + JSON.stringify(data.value) + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
@@ -234,10 +235,10 @@ class Boscheasycontrol extends utils.Adapter {
     async starttimer(name, interval) {
         if (name.endsWith('.info.connection')) { return; }
         await this.stoptimer(name);
-        this.log.debug('starting timer for: ' + name + ' with interval: ' + interval);
         const nslice = name.split('.');
         const path = '/' + nslice.slice(2).join('/');
         this.timers[name] = setIntervalAsync(this.processurl.bind(this, path), interval * 1000);
+        this.log.info('started update timer for ' + name + ' with interval ' + interval + 's');
     }
 
     /**
@@ -248,6 +249,7 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug('stopping timer for: ' + name);
             await clearIntervalAsync(this.timers[name]);
             delete this.timers[name];
+            this.log.info('stopped update timer for ' + name);
         }
     }
 
