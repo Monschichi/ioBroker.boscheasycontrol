@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "boscheasycontrol",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "news": {
+            "0.1.1": {
+                "en": "add logging for debugging"
+            },
             "0.1.0": {
                 "en": "default update every hour"
             },
