@@ -18,7 +18,7 @@
     "url": "https://github.com/Monschichi/ioBroker.boscheasycontrol"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.6.0",
+    "@iobroker/adapter-core": "^2.6.2",
     "bosch-xmpp": "^1.4.1",
     "set-interval-async": "^3.0.2"
   },
