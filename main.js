@@ -316,8 +316,8 @@ class Boscheasycontrol extends utils.Adapter {
             if (state.ack === false) {
                 const nslice = id.split('.');
                 const path = '/' + nslice.slice(2).join('/');
-                //const ret = this.client.put(path, state.val); // not tested
-                //this.log.debug('set state returned: ' + ret);
+                const ret = this.client.put(path, state.val); // not tested
+                this.log.debug('set state returned: ' + ret);
                 this.processurl(path);
             }
         } else {
