@@ -21,6 +21,9 @@ As of now only reading.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### 0.1.2 (2022-09-25)
+* (Monschichi) enable setting of values
+
 ### 0.1.1 (2022-07-05)
 * (Monschichi) add logging for debugging
 
