@@ -1,6 +1,6 @@
 {
   "name": "iobroker.boscheasycontrol",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "integration of Bosch EasyControl CT200 devices",
   "author": {
     "name": "Monschichi",
