@@ -89,7 +89,7 @@ class Boscheasycontrol extends utils.Adapter {
         if (data.type === 'refEnum') {
             const s = data.id.split('/');
             if (s.length === 3 && /[0-9]$/.test(s[2])) {
-                this.log.debug('creating device for ' + data.id);
+                this.log.info('creating device for ' + data.id);
                 await this.setObjectAsync(data.id.substring(1).split('/').join('.'), {
                     type: 'device',
                     common: {
@@ -211,7 +211,7 @@ class Boscheasycontrol extends utils.Adapter {
                 if (obj) {
                     this.onObjectChange(obj._id, obj);
                 } else {
-                    this.log.debug('creating new object with: ' + JSON.stringify(common));
+                    this.log.info('creating new object with: ' + JSON.stringify(common));
                     await this.setObjectAsync(name, {
                         type: 'state',
                         common: common,
@@ -221,7 +221,7 @@ class Boscheasycontrol extends utils.Adapter {
                     this.onObjectChange(obj._id, obj);
                 }
             }
-            this.log.info('updating ' + name + ' to ' + value);
+            this.log.debug('updating ' + name + ' to ' + value);
             await this.setStateAsync(name, value, true);
         } else {
             this.log.warn('got unknown data with id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + JSON.stringify(data.value) + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
@@ -238,7 +238,7 @@ class Boscheasycontrol extends utils.Adapter {
         const nslice = name.split('.');
         const path = '/' + nslice.slice(2).join('/');
         this.timers[name] = setIntervalAsync(this.processurl.bind(this, path), interval * 1000);
-        this.log.info('started update timer for ' + name + ' with interval ' + interval + 's');
+        this.log.debug('started update timer for ' + name + ' with interval ' + interval + 's');
     }
 
     /**
@@ -249,7 +249,7 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug('stopping timer for: ' + name);
             await clearIntervalAsync(this.timers[name]);
             delete this.timers[name];
-            this.log.info('stopped update timer for ' + name);
+            this.log.debug('stopped update timer for ' + name);
         }
     }
 
@@ -259,11 +259,6 @@ class Boscheasycontrol extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
             this.client.end();
             for (const name in this.timers) {
                 this.stoptimer(name);
@@ -276,8 +271,6 @@ class Boscheasycontrol extends utils.Adapter {
         }
     }
 
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
     /**
      * Is called if a subscribed object changes
      * @param {string} id
@@ -325,25 +318,6 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug(`state ${id} deleted`);
         }
     }
-
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * @param {ioBroker.Message} obj
-    //  */
-    // onMessage(obj) {
-    //     if (typeof obj === 'object' && obj.message) {
-    //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
-
-    //             // Send response in callback if required
-    //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-    //         }
-    //     }
-    // }
-
 }
 
 if (require.main !== module) {
