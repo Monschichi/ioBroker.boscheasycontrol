@@ -42,12 +42,6 @@ class Boscheasycontrol extends utils.Adapter {
         // Reset the connection indicator during startup
         this.setState('info.connection', false, true);
 
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        this.log.debug('config serial: ' + this.config.serial);
-        this.log.debug('config accesskey: ' + this.config.accesskey);
-        this.log.debug('config password: ' + this.config.password);
-
         this.client = EasyControlClient({
             serialNumber: this.config.serial,
             accessKey: this.config.accesskey,
