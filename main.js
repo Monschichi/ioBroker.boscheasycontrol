@@ -9,8 +9,8 @@
 const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
-const { EasyControlClient } = require('bosch-xmpp');
-const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/dynamic');
+const {EasyControlClient} = require('bosch-xmpp');
+const {setIntervalAsync, clearIntervalAsync} = require('set-interval-async/dynamic');
 
 class Boscheasycontrol extends utils.Adapter {
 
@@ -19,8 +19,7 @@ class Boscheasycontrol extends utils.Adapter {
      */
     constructor(options) {
         super({
-            ...options,
-            name: 'boscheasycontrol',
+            ...options, name: 'boscheasycontrol'
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -42,25 +41,21 @@ class Boscheasycontrol extends utils.Adapter {
         // Reset the connection indicator during startup
         this.setState('info.connection', false, true);
 
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        this.log.debug('config serial: ' + this.config.serial);
-        this.log.debug('config accesskey: ' + this.config.accesskey);
-        this.log.debug('config password: ' + this.config.password);
-
         this.client = EasyControlClient({
-            serialNumber: this.config.serial,
-            accessKey: this.config.accesskey,
-            password: this.config.password,
+            serialNumber: this.config.serial, accessKey: this.config.accesskey, password: this.config.password
         });
         this.initializing = true;
-        if (!(this.config.serial && this.config.accesskey && this.config.password)) {
+        if (!(
+            this.config.serial && this.config.accesskey && this.config.password
+        )) {
             this.log.error('Serial, Access Key and Password needs to be defined for this adapter to work.');
-        } else {
+        }
+        else {
             this.log.debug('connecting');
             try {
                 await this.client.connect();
-            } catch (e) {
+            }
+            catch (e) {
                 this.log.error(e.stack || e);
             }
             this.log.debug('connected');
@@ -77,11 +72,14 @@ class Boscheasycontrol extends utils.Adapter {
      */
     async processurl(path) {
         // /devices/productLookup is not working, so skipping
-        if (path === '/devices/productLookup') { return; }
+        if (path === '/devices/productLookup') {
+            return;
+        }
         let data;
         try {
             data = await this.client.get(path);
-        } catch (e) {
+        }
+        catch (e) {
             this.log.error(e.stack || e);
             return;
         }
@@ -89,13 +87,11 @@ class Boscheasycontrol extends utils.Adapter {
         if (data.type === 'refEnum') {
             const s = data.id.split('/');
             if (s.length === 3 && /[0-9]$/.test(s[2])) {
-                this.log.debug('creating device for ' + data.id);
+                this.log.info('creating device for ' + data.id);
                 await this.setObjectAsync(data.id.substring(1).split('/').join('.'), {
-                    type: 'device',
-                    common: {
-                        name: data.id.split('/')[-1],
-                    },
-                    native: {}
+                    type: 'device', common: {
+                        name: s[-1]
+                    }, native: {}
                 });
             }
             for (const ref in data.references) {
@@ -108,10 +104,13 @@ class Boscheasycontrol extends utils.Adapter {
     }
 
     /**
-     * @param {{ id: string; type: string; writeable: string; recordable: string; value: string | number | object; used: string; unitOfMeasure: string; minValue: number; maxValue: number; stepSize: number; }} data
+     * @param {{ id: string; type: string; writeable: string; recordable: string; value: string | number | object;
+     *     used: string; unitOfMeasure: string; minValue: number; maxValue: number; stepSize: number; }} data
      */
     async processdata(data) {
-        this.log.debug('Data: id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + data.value + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
+        this.log.debug('Data: id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' +
+            data.recordable + ' value:' + data.value + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure +
+            ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
         const name = data.id.substring(1).split('/').join('.');
         let mytype;
         let value;
@@ -120,8 +119,9 @@ class Boscheasycontrol extends utils.Adapter {
             case 'stringArray':
                 mytype = 'string';
                 if (name.endsWith('.name') || name.endsWith('.email') || name.endsWith('.phone')) {
-                    value = atob(String(data.value));
-                } else {
+                    value = Buffer.from(data.value, 'base64');
+                }
+                else {
                     value = data.value;
                 }
                 break;
@@ -139,7 +139,7 @@ class Boscheasycontrol extends utils.Adapter {
             case 'programArray':
                 mytype = 'string';
                 for (const i in data.value) {
-                    data.value[i].name = atob(data.value[i].name);
+                    data.value[i].name = Buffer.from(data.value[i].name, 'base64');
                 }
                 value = JSON.stringify(data.value);
                 break;
@@ -147,7 +147,7 @@ class Boscheasycontrol extends utils.Adapter {
                 mytype = 'string';
                 for (const i in data.value) {
                     for (const [key, value] of Object.entries(data.value[i])) {
-                        data.value[i][key] = atob(value);
+                        data.value[i][key] = Buffer.from(value, 'base64');
                     }
                 }
                 value = JSON.stringify(data.value);
@@ -179,7 +179,8 @@ class Boscheasycontrol extends utils.Adapter {
                         unit: data.unitOfMeasure,
                         custom: {}
                     };
-                } else if (mytype === 'number') {
+                }
+                else if (mytype === 'number') {
                     common = {
                         name: data.id.split('/')[-1],
                         type: 'number',
@@ -192,7 +193,8 @@ class Boscheasycontrol extends utils.Adapter {
                         unit: data.unitOfMeasure,
                         custom: {}
                     };
-                } else {
+                }
+                else {
                     common = {
                         name: data.id.split('/')[-1],
                         type: 'string',
@@ -203,28 +205,30 @@ class Boscheasycontrol extends utils.Adapter {
                         custom: {}
                     };
                 }
-                common['custom'][this.name + '.' + this.instance] = {
-                    enabled: true,
-                    refresh: 3600
-                };
                 const obj = await this.getObjectAsync(name);
                 if (obj) {
-                    this.onObjectChange(obj._id, obj);
-                } else {
-                    this.log.debug('creating new object with: ' + JSON.stringify(common));
+                    await this.onObjectChange(obj._id, obj);
+                }
+                else {
+                    this.log.info('creating new object with: ' + JSON.stringify(common));
                     await this.setObjectAsync(name, {
-                        type: 'state',
-                        common: common,
-                        native: {}
+                        type: 'state', common: common, native: {}
                     });
                     const obj = await this.getObjectAsync(name);
-                    this.onObjectChange(obj._id, obj);
+                    if (obj) {
+                        await this.onObjectChange(obj._id, obj);
+                    }
                 }
             }
-            this.log.info('updating ' + name + ' to ' + value);
+            this.log.debug('updating ' + name + ' to ' + value);
             await this.setStateAsync(name, value, true);
-        } else {
-            this.log.warn('got unknown data with id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable + ' recordable:' + data.recordable + ' value:' + JSON.stringify(data.value) + ' used: ' + data.used + ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue + ' stepSize:' + data.stepSize);
+        }
+        else {
+            this.log.warn(
+                'got unknown data with id:' + data.id + ' type:' + data.type + ' writeable:' + data.writeable +
+                ' recordable:' + data.recordable + ' value:' + JSON.stringify(data.value) + ' used: ' + data.used +
+                ' unitOfMeasure:' + data.unitOfMeasure + ' minValue:' + data.minValue + ' maxValue: ' + data.maxValue +
+                ' stepSize:' + data.stepSize);
         }
     }
 
@@ -233,12 +237,14 @@ class Boscheasycontrol extends utils.Adapter {
      * @param {number} interval
      */
     async starttimer(name, interval) {
-        if (name.endsWith('.info.connection')) { return; }
+        if (name.endsWith('.info.connection')) {
+            return;
+        }
         await this.stoptimer(name);
         const nslice = name.split('.');
         const path = '/' + nslice.slice(2).join('/');
         this.timers[name] = setIntervalAsync(this.processurl.bind(this, path), interval * 1000);
-        this.log.info('started update timer for ' + name + ' with interval ' + interval + 's');
+        this.log.debug('started update timer for ' + name + ' with interval ' + interval + 's');
     }
 
     /**
@@ -249,7 +255,7 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug('stopping timer for: ' + name);
             await clearIntervalAsync(this.timers[name]);
             delete this.timers[name];
-            this.log.info('stopped update timer for ' + name);
+            this.log.debug('stopped update timer for ' + name);
         }
     }
 
@@ -257,27 +263,20 @@ class Boscheasycontrol extends utils.Adapter {
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      * @param {() => void} callback
      */
-    onUnload(callback) {
+    async onUnload(callback) {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
             this.client.end();
             for (const name in this.timers) {
-                this.stoptimer(name);
+                await this.stoptimer(name);
             }
             this.setState('info.connection', false, true);
-
             callback();
-        } catch (e) {
+        }
+        catch (e) {
             callback();
         }
     }
 
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
     /**
      * Is called if a subscribed object changes
      * @param {string} id
@@ -288,15 +287,13 @@ class Boscheasycontrol extends utils.Adapter {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
             if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
-                if (obj.common.custom[`${this.name}.${this.instance}`]['enabled']) {
-                    await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`]['refresh']);
-                } else {
-                    await this.stoptimer(id);
-                }
-            } else {
+                await this.starttimer(id, 60);
+            }
+            else {
                 await this.stoptimer(id);
             }
-        } else {
+        }
+        else {
             // The object was deleted
             this.log.debug(`object ${id} deleted`);
             await this.stoptimer(id);
@@ -309,41 +306,28 @@ class Boscheasycontrol extends utils.Adapter {
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      */
-    onStateChange(id, state) {
+    async onStateChange(id, state) {
         if (state) {
             // The state was changed
             this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             if (state.ack === false) {
-                const nslice = id.split('.');
-                const path = '/' + nslice.slice(2).join('/');
-                const ret = this.client.put(path, state.val); // not tested
-                this.log.debug('set state returned: ' + ret);
-                this.processurl(path);
+                try {
+                    const nslice = id.split('.');
+                    const path = '/' + nslice.slice(2).join('/');
+                    const ret = this.client.put(path, state.val); // not tested
+                    this.log.debug('set state returned: ' + ret);
+                    await this.processurl(path);
+                }
+                catch (e) {
+                    this.log.error(e.stack || e);
+                }
             }
-        } else {
+        }
+        else {
             // The state was deleted
             this.log.debug(`state ${id} deleted`);
         }
     }
-
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * @param {ioBroker.Message} obj
-    //  */
-    // onMessage(obj) {
-    //     if (typeof obj === 'object' && obj.message) {
-    //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
-
-    //             // Send response in callback if required
-    //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-    //         }
-    //     }
-    // }
-
 }
 
 if (require.main !== module) {
@@ -352,7 +336,8 @@ if (require.main !== module) {
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
     module.exports = (options) => new Boscheasycontrol(options);
-} else {
+}
+else {
     // otherwise start the instance directly
     new Boscheasycontrol();
 }
