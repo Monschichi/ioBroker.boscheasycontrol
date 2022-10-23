@@ -177,7 +177,6 @@ class Boscheasycontrol extends utils.Adapter {
                         write: Boolean(data.writeable),
                         role: 'value',
                         unit: data.unitOfMeasure,
-                        custom: {}
                     };
                 }
                 else if (mytype === 'number') {
@@ -191,7 +190,6 @@ class Boscheasycontrol extends utils.Adapter {
                         max: Number(data.maxValue),
                         step: Number(data.stepSize),
                         unit: data.unitOfMeasure,
-                        custom: {}
                     };
                 }
                 else {
@@ -202,7 +200,6 @@ class Boscheasycontrol extends utils.Adapter {
                         write: Boolean(data.writeable),
                         role: 'value',
                         unit: data.unitOfMeasure,
-                        custom: {}
                     };
                 }
                 const obj = await this.getObjectAsync(name);
@@ -286,12 +283,7 @@ class Boscheasycontrol extends utils.Adapter {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
-            if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
-                await this.starttimer(id, 60);
-            }
-            else {
-                await this.stoptimer(id);
-            }
+            await this.starttimer(id, 60);
         }
         else {
             // The object was deleted
