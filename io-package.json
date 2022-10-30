@@ -1,127 +1,127 @@
 {
-    "common": {
-        "name": "boscheasycontrol",
-        "version": "0.1.2",
-        "news": {
-            "0.1.2": {
-                "en": "enable setting of values"
-            },
-            "0.1.1": {
-                "en": "add logging for debugging"
-            },
-            "0.1.0": {
-                "en": "default update every hour"
-            },
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
-            }
-        },
-        "titleLang": {
-            "en": "Bosch EasyControl",
-            "de": "Bosch Easy Control",
-            "ru": "Бош EasyControl",
-            "pt": "Bosch EasyControl",
-            "nl": "Bosch EasyControl",
-            "fr": "Bosch Easy Control",
-            "it": "Bosch Easy Control",
-            "es": "Easy Control de Bosch",
-            "pl": "Bosch EasyControl",
-            "zh-cn": "博世 EasyControl"
-        },
-        "desc": {
-            "en": "integration of Bosch EasyControl CT200 devices",
-            "de": "Integration von Bosch EasyControl CT200 Geräten",
-            "ru": "интеграция устройств Bosch EasyControl CT200",
-            "pt": "integração de dispositivos Bosch EasyControl CT200",
-            "nl": "integratie van Bosch EasyControl CT200-apparaten",
-            "fr": "intégration des appareils Bosch EasyControl CT200",
-            "it": "integrazione dei dispositivi Bosch EasyControl CT200",
-            "es": "integración de dispositivos Bosch EasyControl CT200",
-            "pl": "integracja urządzeń Bosch EasyControl CT200",
-            "zh-cn": "博世 EasyControl CT200 设备的集成"
-        },
-        "authors": [
-            "Monschichi <monschichi@gmail.com>"
-        ],
-        "keywords": [
-            "bosch",
-            "easycontrol",
-            "ct200"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "boscheasycontrol.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.boscheasycontrol/main/admin/boscheasycontrol.png",
-        "readme": "https://github.com/Monschichi/ioBroker.boscheasycontrol/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "climate-control",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "dependencies": [
-            {
-                "js-controller": ">=4.0.0"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.3.0"
-            }
-        ],
-        "adminUI": {
-            "config": "json",
-            "custom": "json"
-        },
-        "preserveSettings": "custom",
-        "supportCustoms": true
+  "common": {
+    "adminUI": {
+      "config": "json",
+      "custom": "json"
     },
-    "native": {
-        "serial": "",
-        "accesskey": "",
-        "password": ""
+    "authors": [
+      "Monschichi <monschichi@gmail.com>"
+    ],
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "dependencies": [
+      {
+        "js-controller": ">=4.0.0"
+      }
+    ],
+    "desc": {
+      "de": "Integration von Bosch EasyControl CT200 Ger\u00e4ten",
+      "en": "integration of Bosch EasyControl CT200 devices",
+      "es": "integraci\u00f3n de dispositivos Bosch EasyControl CT200",
+      "fr": "int\u00e9gration des appareils Bosch EasyControl CT200",
+      "it": "integrazione dei dispositivi Bosch EasyControl CT200",
+      "nl": "integratie van Bosch EasyControl CT200-apparaten",
+      "pl": "integracja urz\u0105dze\u0144 Bosch EasyControl CT200",
+      "pt": "integra\u00e7\u00e3o de dispositivos Bosch EasyControl CT200",
+      "ru": "\u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Bosch EasyControl CT200",
+      "zh-cn": "\u535a\u4e16 EasyControl CT200 \u8bbe\u5907\u7684\u96c6\u6210"
     },
-    "protectedNative": [
-        "serial",
-        "accesskey",
-        "password"
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.boscheasycontrol/main/admin/boscheasycontrol.png",
+    "globalDependencies": [
+      {
+        "admin": ">=5.3.0"
+      }
     ],
-    "encryptedNative": [
-        "password"
+    "icon": "boscheasycontrol.png",
+    "keywords": [
+      "bosch",
+      "easycontrol",
+      "ct200"
     ],
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
-    ]
+    "license": "MIT",
+    "loglevel": "info",
+    "main": "main.js",
+    "mode": "daemon",
+    "name": "boscheasycontrol",
+    "news": {
+      "0.0.1": {
+        "de": "Erstver\u00f6ffentlichung",
+        "en": "initial release",
+        "es": "Versi\u00f3n inicial",
+        "fr": "Premi\u00e8re version",
+        "it": "Versione iniziale",
+        "nl": "Eerste uitgave",
+        "pl": "Pierwsze wydanie",
+        "pt": "lan\u00e7amento inicial",
+        "ru": "\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0438\u044f",
+        "zh-cn": "\u9996\u6b21\u51fa\u7248"
+      },
+      "0.1.0": {
+        "en": "default update every hour"
+      },
+      "0.1.1": {
+        "en": "add logging for debugging"
+      },
+      "0.1.2": {
+        "en": "enable setting of values"
+      }
+    },
+    "platform": "Javascript/Node.js",
+    "preserveSettings": "custom",
+    "readme": "https://github.com/Monschichi/ioBroker.boscheasycontrol/blob/main/README.md",
+    "supportCustoms": true,
+    "titleLang": {
+      "de": "Bosch Easy Control",
+      "en": "Bosch EasyControl",
+      "es": "Easy Control de Bosch",
+      "fr": "Bosch Easy Control",
+      "it": "Bosch Easy Control",
+      "nl": "Bosch EasyControl",
+      "pl": "Bosch EasyControl",
+      "pt": "Bosch EasyControl",
+      "ru": "\u0411\u043e\u0448 EasyControl",
+      "zh-cn": "\u535a\u4e16 EasyControl"
+    },
+    "type": "climate-control",
+    "version": "0.1.2"
+  },
+  "encryptedNative": [
+    "password"
+  ],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "common": {
+        "name": "Information"
+      },
+      "native": {},
+      "type": "channel"
+    },
+    {
+      "_id": "info.connection",
+      "common": {
+        "def": false,
+        "name": "Device or service connected",
+        "read": true,
+        "role": "indicator.connected",
+        "type": "boolean",
+        "write": false
+      },
+      "native": {},
+      "type": "state"
+    }
+  ],
+  "native": {
+    "accesskey": "",
+    "password": "",
+    "serial": ""
+  },
+  "objects": [],
+  "protectedNative": [
+    "serial",
+    "accesskey",
+    "password"
+  ]
 }

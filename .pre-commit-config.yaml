@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: pretty-format-json
+        args: [ "--autofix" ]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pre-commit/mirrors-fixmyjs
+    rev: v2.0.0
+    hooks:
+      - id: fixmyjs
+  - repo: https://github.com/pre-commit/mirrors-jshint
+    rev: v2.13.5
+    hooks:
+      - id: jshint

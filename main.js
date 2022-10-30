@@ -46,7 +46,9 @@ class Boscheasycontrol extends utils.Adapter {
         });
         this.initializing = true;
         if (!(
-            this.config.serial && this.config.accesskey && this.config.password
+            (
+                (this.config.serial && this.config.accesskey && this.config.password)
+            )
         )) {
             this.log.error('Serial, Access Key and Password needs to be defined for this adapter to work.');
         }
@@ -168,45 +170,48 @@ class Boscheasycontrol extends utils.Adapter {
         }
         if (mytype) {
             if (this.initializing) {
-                let common;
-                if (mytype === 'string') {
-                    common = {
-                        name: data.id.split('/')[-1],
-                        type: 'string',
-                        read: true,
-                        write: Boolean(data.writeable),
-                        role: 'value',
-                        unit: data.unitOfMeasure,
-                    };
-                }
-                else if (mytype === 'number') {
-                    common = {
-                        name: data.id.split('/')[-1],
-                        type: 'number',
-                        read: true,
-                        write: Boolean(data.writeable),
-                        role: 'value',
-                        min: Number(data.minValue),
-                        max: Number(data.maxValue),
-                        step: Number(data.stepSize),
-                        unit: data.unitOfMeasure,
-                    };
-                }
-                else {
-                    common = {
-                        name: data.id.split('/')[-1],
-                        type: 'string',
-                        read: true,
-                        write: Boolean(data.writeable),
-                        role: 'value',
-                        unit: data.unitOfMeasure,
-                    };
-                }
                 const obj = await this.getObjectAsync(name);
                 if (obj) {
                     await this.onObjectChange(obj._id, obj);
                 }
                 else {
+                    let common;
+                    if (mytype === 'string') {
+                        common = {
+                            name: data.id.split('/')[-1],
+                            type: 'string',
+                            read: true,
+                            write: Boolean(data.writeable),
+                            role: 'value',
+                            unit: data.unitOfMeasure,
+                            custom: {}
+                        };
+                    }
+                    else if (mytype === 'number') {
+                        common = {
+                            name: data.id.split('/')[-1],
+                            type: 'number',
+                            read: true,
+                            write: Boolean(data.writeable),
+                            role: 'value',
+                            min: Number(data.minValue),
+                            max: Number(data.maxValue),
+                            step: Number(data.stepSize),
+                            unit: data.unitOfMeasure,
+                            custom: {}
+                        };
+                    }
+                    else {
+                        common = {
+                            name: data.id.split('/')[-1],
+                            type: 'string',
+                            read: true,
+                            write: Boolean(data.writeable),
+                            role: 'value',
+                            unit: data.unitOfMeasure,
+                            custom: {}
+                        };
+                    }
                     this.log.info('creating new object with: ' + JSON.stringify(common));
                     await this.setObjectAsync(name, {
                         type: 'state', common: common, native: {}
@@ -283,7 +288,12 @@ class Boscheasycontrol extends utils.Adapter {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
-            await this.starttimer(id, 60);
+            if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
+                await this.starttimer(id, 60);
+            }
+            else {
+                await this.stoptimer(id);
+            }
         }
         else {
             // The object was deleted

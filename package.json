@@ -1,27 +1,17 @@
 {
-  "name": "iobroker.boscheasycontrol",
-  "version": "0.1.2",
-  "description": "integration of Bosch EasyControl CT200 devices",
   "author": {
-    "name": "Monschichi",
-    "email": "monschichi@gmail.com"
+    "email": "monschichi@gmail.com",
+    "name": "Monschichi"
   },
-  "homepage": "https://github.com/Monschichi/ioBroker.boscheasycontrol",
-  "license": "MIT",
-  "keywords": [
-    "bosch",
-    "easycontrol",
-    "ct200"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Monschichi/ioBroker.boscheasycontrol"
+  "bugs": {
+    "url": "https://github.com/Monschichi/ioBroker.boscheasycontrol/issues"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.6.7",
     "bosch-xmpp": "^1.4.1",
     "set-interval-async": "^3.0.2"
   },
+  "description": "integration of Bosch EasyControl CT200 devices",
   "devDependencies": {
     "@alcalzone/release-script": "^3.5.9",
     "@iobroker/adapter-dev": "^1.2.0",
@@ -43,7 +33,6 @@
     "sinon-chai": "^3.7.0",
     "typescript": "~4.8.4"
   },
-  "main": "main.js",
   "files": [
     "admin{,/!(src)/**}/!(tsconfig|tsconfig.*).json",
     "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
@@ -53,19 +42,30 @@
     "LICENSE",
     "main.js"
   ],
+  "homepage": "https://github.com/Monschichi/ioBroker.boscheasycontrol",
+  "keywords": [
+    "bosch",
+    "easycontrol",
+    "ct200"
+  ],
+  "license": "MIT",
+  "main": "main.js",
+  "name": "iobroker.boscheasycontrol",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Monschichi/ioBroker.boscheasycontrol"
+  },
   "scripts": {
+    "check": "tsc --noEmit -p tsconfig.check.json",
+    "lint": "eslint",
+    "release": "release-script --all",
+    "test": "npm run test:js && npm run test:package",
+    "test:integration": "mocha test/integration --exit",
     "test:js": "mocha --config test/mocharc.custom.json \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
-    "test:integration": "mocha test/integration --exit",
-    "test": "npm run test:js && npm run test:package",
-    "check": "tsc --noEmit -p tsconfig.check.json",
-    "lint": "eslint",
-    "translate": "translate-adapter",
-    "release": "release-script --all"
+    "translate": "translate-adapter"
   },
-  "bugs": {
-    "url": "https://github.com/Monschichi/ioBroker.boscheasycontrol/issues"
-  },
-  "readmeFilename": "README.md"
+  "version": "0.1.2"
 }

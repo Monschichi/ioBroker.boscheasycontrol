@@ -1,44 +1,44 @@
 {
-    "cli": true,
-    "target": "directory",
-    "adapterName": "boscheasycontrol",
-    "title": "Bosch EasyControl",
-    "description": "integration of Bosch EasyControl CT200 devices",
-    "keywords": [
-        "bosch",
-        "easycontrol",
-        "ct200"
-    ],
-    "expert": "yes",
-    "features": [
-        "adapter"
-    ],
-    "adminFeatures": [],
-    "type": "climate-control",
-    "startMode": "daemon",
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "connectionIndicator": "yes",
-    "language": "JavaScript",
-    "adminReact": "no",
-    "tools": [
-        "ESLint",
-        "type checking"
-    ],
-    "i18n": "JSON",
-    "releaseScript": "yes",
-    "devServer": "yes",
-    "devServerPort": 8081,
-    "indentation": "Space (4)",
-    "quotes": "single",
-    "es6class": "yes",
-    "authorName": "Monschichi",
-    "authorGithub": "Monschichi",
-    "authorEmail": "monschichi@gmail.com",
-    "gitRemoteProtocol": "HTTPS",
-    "gitCommit": "no",
-    "defaultBranch": "main",
-    "license": "MIT License",
-    "dependabot": "yes",
-    "creatorVersion": "2.1.1"
+  "adapterName": "boscheasycontrol",
+  "adminFeatures": [],
+  "adminReact": "no",
+  "authorEmail": "monschichi@gmail.com",
+  "authorGithub": "Monschichi",
+  "authorName": "Monschichi",
+  "cli": true,
+  "connectionIndicator": "yes",
+  "connectionType": "cloud",
+  "creatorVersion": "2.1.1",
+  "dataSource": "poll",
+  "defaultBranch": "main",
+  "dependabot": "yes",
+  "description": "integration of Bosch EasyControl CT200 devices",
+  "devServer": "yes",
+  "devServerPort": 8081,
+  "es6class": "yes",
+  "expert": "yes",
+  "features": [
+    "adapter"
+  ],
+  "gitCommit": "no",
+  "gitRemoteProtocol": "HTTPS",
+  "i18n": "JSON",
+  "indentation": "Space (4)",
+  "keywords": [
+    "bosch",
+    "easycontrol",
+    "ct200"
+  ],
+  "language": "JavaScript",
+  "license": "MIT License",
+  "quotes": "single",
+  "releaseScript": "yes",
+  "startMode": "daemon",
+  "target": "directory",
+  "title": "Bosch EasyControl",
+  "tools": [
+    "ESLint",
+    "type checking"
+  ],
+  "type": "climate-control"
 }
