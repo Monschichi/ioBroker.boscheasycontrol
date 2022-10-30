@@ -1,27 +1,27 @@
 {
-    "type": "tabs",
-    "i18n": true,
-    "items": {
-        "settingsTab": {
-            "type": "panel",
-            "label": "Settings",
-            "items": {
-                "serial": {
-                    "type": "number",
-                    "label": "Serial",
-                    "help": "numbers only"
-                },
-                "accesskey": {
-                    "type": "text",
-                    "label": "Access Key",
-                    "help": "without space and hyphens"
-                },
-                "password": {
-                    "type": "text",
-                    "label": "Password",
-                    "help": "should be less than 9 characters"
-                }
-            }
+  "i18n": true,
+  "items": {
+    "settingsTab": {
+      "items": {
+        "accesskey": {
+          "help": "without space and hyphens",
+          "label": "Access Key",
+          "type": "text"
+        },
+        "password": {
+          "help": "should be less than 9 characters",
+          "label": "Password",
+          "type": "text"
+        },
+        "serial": {
+          "help": "numbers only",
+          "label": "Serial",
+          "type": "number"
         }
+      },
+      "label": "Settings",
+      "type": "panel"
     }
+  },
+  "type": "tabs"
 }
