@@ -184,7 +184,6 @@ class Boscheasycontrol extends utils.Adapter {
                             write: Boolean(data.writeable),
                             role: 'value',
                             unit: data.unitOfMeasure,
-                            custom: {}
                         };
                     }
                     else if (mytype === 'number') {
@@ -198,7 +197,6 @@ class Boscheasycontrol extends utils.Adapter {
                             max: Number(data.maxValue),
                             step: Number(data.stepSize),
                             unit: data.unitOfMeasure,
-                            custom: {}
                         };
                     }
                     else {
@@ -209,7 +207,6 @@ class Boscheasycontrol extends utils.Adapter {
                             write: Boolean(data.writeable),
                             role: 'value',
                             unit: data.unitOfMeasure,
-                            custom: {}
                         };
                     }
                     this.log.info('creating new object with: ' + JSON.stringify(common));
