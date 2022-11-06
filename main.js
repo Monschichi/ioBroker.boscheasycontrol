@@ -323,7 +323,7 @@ class Boscheasycontrol extends utils.Adapter {
                 try {
                     const nslice = id.split('.');
                     const path = '/' + nslice.slice(2).join('/');
-                    const ret = this.client.put(path, state.val); // not tested
+                    const ret = this.client.put(path, {'value':state.val}); // not tested
                     this.log.debug('set state returned: ' + ret);
                     await this.processurl(path);
                 }
