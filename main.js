@@ -92,7 +92,7 @@ class Boscheasycontrol extends utils.Adapter {
                 this.log.info('creating device for ' + data.id);
                 await this.setObjectAsync(data.id.substring(1).split('/').join('.'), {
                     type: 'device', common: {
-                        name: s[-1]
+                        name: s[s.length-1]
                     }, native: {}
                 });
             }
@@ -121,7 +121,7 @@ class Boscheasycontrol extends utils.Adapter {
             case 'stringArray':
                 mytype = 'string';
                 if (name.endsWith('.name') || name.endsWith('.email') || name.endsWith('.phone')) {
-                    value = Buffer.from(data.value, 'base64');
+                    value = Buffer.from(data.value, 'base64').toString();
                 }
                 else {
                     value = data.value;
@@ -149,7 +149,7 @@ class Boscheasycontrol extends utils.Adapter {
                 mytype = 'string';
                 for (const i in data.value) {
                     for (const [key, value] of Object.entries(data.value[i])) {
-                        data.value[i][key] = Buffer.from(value, 'base64');
+                        data.value[i][key] = Buffer.from(value, 'base64').toString();
                     }
                 }
                 value = JSON.stringify(data.value);
@@ -222,6 +222,15 @@ class Boscheasycontrol extends utils.Adapter {
                     }
                 }
             }
+            if (name.endsWith('.name')) {
+                const parent_name = name.split('.').slice(0, -1).join('.');
+                const parent = await this.getObjectAsync(parent_name);
+                if (parent) {
+                    parent.common.name = value;
+                    await this.setObjectAsync(parent_name, parent);
+                    this.log.debug('updated name of ' + parent_name + ' to: ' + JSON.stringify(parent));
+                }
+            }
             this.log.debug('updating ' + name + ' to ' + value);
             await this.setStateAsync(name, value, true);
         }
@@ -288,11 +297,13 @@ class Boscheasycontrol extends utils.Adapter {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
-            if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
-                await this.starttimer(id, 60);
-            }
-            else {
-                await this.stoptimer(id);
+            switch (obj.common.unit) {
+                case '%':
+                case 'C':
+                    await this.starttimer(id, 120);
+                    break;
+                default:
+                    await this.starttimer(id, 900);
             }
         }
         else {
@@ -300,7 +311,6 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug(`object ${id} deleted`);
             await this.stoptimer(id);
         }
-        this.log.debug('running timers: ' + Object.keys(this.timers));
     }
 
     /**

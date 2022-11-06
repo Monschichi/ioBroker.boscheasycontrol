@@ -1,127 +1,160 @@
 {
-  "common": {
-    "adminUI": {
-      "config": "json",
-      "custom": "json"
+    "common": {
+        "adminUI": {
+            "config": "json",
+            "custom": "json"
+        },
+        "authors": [
+            "Monschichi <monschichi@gmail.com>"
+        ],
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "dependencies": [
+            {
+                "js-controller": ">=4.0.0"
+            }
+        ],
+        "desc": {
+            "de": "Integration von Bosch EasyControl CT200 Geräten",
+            "en": "integration of Bosch EasyControl CT200 devices",
+            "es": "integración de dispositivos Bosch EasyControl CT200",
+            "fr": "intégration des appareils Bosch EasyControl CT200",
+            "it": "integrazione dei dispositivi Bosch EasyControl CT200",
+            "nl": "integratie van Bosch EasyControl CT200-apparaten",
+            "pl": "integracja urządzeń Bosch EasyControl CT200",
+            "pt": "integração de dispositivos Bosch EasyControl CT200",
+            "ru": "интеграция устройств Bosch EasyControl CT200",
+            "zh-cn": "博世 EasyControl CT200 设备的集成",
+            "uk": "інтеграція пристроїв Bosch EasyControl CT200"
+        },
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.boscheasycontrol/main/admin/boscheasycontrol.png",
+        "globalDependencies": [
+            {
+                "admin": ">=5.3.0"
+            }
+        ],
+        "icon": "boscheasycontrol.png",
+        "keywords": [
+            "bosch",
+            "easycontrol",
+            "ct200"
+        ],
+        "license": "MIT",
+        "loglevel": "info",
+        "main": "main.js",
+        "mode": "daemon",
+        "name": "boscheasycontrol",
+        "news": {
+            "0.0.1": {
+                "de": "Erstveröffentlichung",
+                "en": "initial release",
+                "es": "Versión inicial",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "nl": "Eerste uitgave",
+                "pl": "Pierwsze wydanie",
+                "pt": "lançamento inicial",
+                "ru": "Начальная версия",
+                "zh-cn": "首次出版",
+                "uk": "початковий випуск"
+            },
+            "0.1.0": {
+                "en": "default update every hour",
+                "de": "Standardaktualisierung jede Stunde",
+                "ru": "обновление по умолчанию каждый час",
+                "pt": "atualização padrão a cada hora",
+                "nl": "standaard update elk uur",
+                "fr": "mise à jour par défaut toutes les heures",
+                "it": "aggiornamento predefinito ogni ora",
+                "es": "actualización predeterminada cada hora",
+                "pl": "domyślna aktualizacja co godzinę",
+                "uk": "оновлювати за замовчуванням щогодини",
+                "zh-cn": "默认每小时更新一次"
+            },
+            "0.1.1": {
+                "en": "add logging for debugging",
+                "de": "Protokollierung zum Debuggen hinzufügen",
+                "ru": "добавить ведение журнала для отладки",
+                "pt": "adicionar log para depuração",
+                "nl": "logboekregistratie toevoegen voor foutopsporing",
+                "fr": "ajouter la journalisation pour le débogage",
+                "it": "aggiungi la registrazione per il debug",
+                "es": "agregar registro para depuración",
+                "pl": "dodaj logowanie do debugowania",
+                "uk": "додати журнал для налагодження",
+                "zh-cn": "添加日志以进行调试"
+            },
+            "0.1.2": {
+                "en": "enable setting of values",
+                "de": "Einstellung von Werten ermöglichen",
+                "ru": "включить установку значений",
+                "pt": "habilitar a configuração de valores",
+                "nl": "instelling van waarden inschakelen",
+                "fr": "activer le réglage des valeurs",
+                "it": "abilitare l'impostazione dei valori",
+                "es": "permitir la configuración de valores",
+                "pl": "włącz ustawianie wartości",
+                "uk": "дозволити встановлення значень",
+                "zh-cn": "启用值的设置"
+            }
+        },
+        "platform": "Javascript/Node.js",
+        "preserveSettings": "custom",
+        "readme": "https://github.com/Monschichi/ioBroker.boscheasycontrol/blob/main/README.md",
+        "supportCustoms": true,
+        "titleLang": {
+            "de": "Bosch Easy Control",
+            "en": "Bosch EasyControl",
+            "es": "Easy Control de Bosch",
+            "fr": "Bosch Easy Control",
+            "it": "Bosch Easy Control",
+            "nl": "Bosch EasyControl",
+            "pl": "Bosch EasyControl",
+            "pt": "Bosch EasyControl",
+            "ru": "Бош EasyControl",
+            "zh-cn": "博世 EasyControl",
+            "uk": "Bosch EasyControl"
+        },
+        "type": "climate-control",
+        "version": "0.1.2"
     },
-    "authors": [
-      "Monschichi <monschichi@gmail.com>"
+    "encryptedNative": [
+        "password"
     ],
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "dependencies": [
-      {
-        "js-controller": ">=4.0.0"
-      }
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "common": {
+                "name": "Information"
+            },
+            "native": {},
+            "type": "channel"
+        },
+        {
+            "_id": "info.connection",
+            "common": {
+                "def": false,
+                "name": "Device or service connected",
+                "read": true,
+                "role": "indicator.connected",
+                "type": "boolean",
+                "write": false
+            },
+            "native": {},
+            "type": "state"
+        }
     ],
-    "desc": {
-      "de": "Integration von Bosch EasyControl CT200 Ger\u00e4ten",
-      "en": "integration of Bosch EasyControl CT200 devices",
-      "es": "integraci\u00f3n de dispositivos Bosch EasyControl CT200",
-      "fr": "int\u00e9gration des appareils Bosch EasyControl CT200",
-      "it": "integrazione dei dispositivi Bosch EasyControl CT200",
-      "nl": "integratie van Bosch EasyControl CT200-apparaten",
-      "pl": "integracja urz\u0105dze\u0144 Bosch EasyControl CT200",
-      "pt": "integra\u00e7\u00e3o de dispositivos Bosch EasyControl CT200",
-      "ru": "\u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 Bosch EasyControl CT200",
-      "zh-cn": "\u535a\u4e16 EasyControl CT200 \u8bbe\u5907\u7684\u96c6\u6210"
+    "native": {
+        "accesskey": "",
+        "password": "",
+        "serial": ""
     },
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Monschichi/ioBroker.boscheasycontrol/main/admin/boscheasycontrol.png",
-    "globalDependencies": [
-      {
-        "admin": ">=5.3.0"
-      }
-    ],
-    "icon": "boscheasycontrol.png",
-    "keywords": [
-      "bosch",
-      "easycontrol",
-      "ct200"
-    ],
-    "license": "MIT",
-    "loglevel": "info",
-    "main": "main.js",
-    "mode": "daemon",
-    "name": "boscheasycontrol",
-    "news": {
-      "0.0.1": {
-        "de": "Erstver\u00f6ffentlichung",
-        "en": "initial release",
-        "es": "Versi\u00f3n inicial",
-        "fr": "Premi\u00e8re version",
-        "it": "Versione iniziale",
-        "nl": "Eerste uitgave",
-        "pl": "Pierwsze wydanie",
-        "pt": "lan\u00e7amento inicial",
-        "ru": "\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0438\u044f",
-        "zh-cn": "\u9996\u6b21\u51fa\u7248"
-      },
-      "0.1.0": {
-        "en": "default update every hour"
-      },
-      "0.1.1": {
-        "en": "add logging for debugging"
-      },
-      "0.1.2": {
-        "en": "enable setting of values"
-      }
-    },
-    "platform": "Javascript/Node.js",
-    "preserveSettings": "custom",
-    "readme": "https://github.com/Monschichi/ioBroker.boscheasycontrol/blob/main/README.md",
-    "supportCustoms": true,
-    "titleLang": {
-      "de": "Bosch Easy Control",
-      "en": "Bosch EasyControl",
-      "es": "Easy Control de Bosch",
-      "fr": "Bosch Easy Control",
-      "it": "Bosch Easy Control",
-      "nl": "Bosch EasyControl",
-      "pl": "Bosch EasyControl",
-      "pt": "Bosch EasyControl",
-      "ru": "\u0411\u043e\u0448 EasyControl",
-      "zh-cn": "\u535a\u4e16 EasyControl"
-    },
-    "type": "climate-control",
-    "version": "0.1.2"
-  },
-  "encryptedNative": [
-    "password"
-  ],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "common": {
-        "name": "Information"
-      },
-      "native": {},
-      "type": "channel"
-    },
-    {
-      "_id": "info.connection",
-      "common": {
-        "def": false,
-        "name": "Device or service connected",
-        "read": true,
-        "role": "indicator.connected",
-        "type": "boolean",
-        "write": false
-      },
-      "native": {},
-      "type": "state"
-    }
-  ],
-  "native": {
-    "accesskey": "",
-    "password": "",
-    "serial": ""
-  },
-  "objects": [],
-  "protectedNative": [
-    "serial",
-    "accesskey",
-    "password"
-  ]
+    "objects": [],
+    "protectedNative": [
+        "serial",
+        "accesskey",
+        "password"
+    ]
 }
