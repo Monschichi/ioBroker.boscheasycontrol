@@ -1,8 +1,7 @@
 {
     "common": {
         "adminUI": {
-            "config": "json",
-            "custom": "json"
+            "config": "json"
         },
         "authors": [
             "Monschichi <monschichi@gmail.com>"
@@ -101,9 +100,7 @@
             }
         },
         "platform": "Javascript/Node.js",
-        "preserveSettings": "custom",
         "readme": "https://github.com/Monschichi/ioBroker.boscheasycontrol/blob/main/README.md",
-        "supportCustoms": true,
         "titleLang": {
             "de": "Bosch Easy Control",
             "en": "Bosch EasyControl",
@@ -118,7 +115,7 @@
             "uk": "Bosch EasyControl"
         },
         "type": "climate-control",
-        "version": "0.1.3"
+        "version": "0.1.4"
     },
     "encryptedNative": [
         "password"
