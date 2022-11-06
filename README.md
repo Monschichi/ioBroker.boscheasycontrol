@@ -24,6 +24,7 @@ As of now only reading.
 ### **WORK IN PROGRESS**
 * fix logging
 * add dynamic refresh timings
+* added device names
 
 ### 0.1.2 (2022-09-25)
 * (Monschichi) enable setting of values
