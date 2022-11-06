@@ -60,13 +60,13 @@ class Boscheasycontrol extends utils.Adapter {
             catch (e) {
                 this.log.error(e.stack || e);
             }
-            this.log.debug('connected');
             this.setState('info.connection', true, true);
+            await this.subscribeStatesAsync('*');
+            await this.subscribeObjectsAsync('*');
             await this.processurl('/');
             this.initializing = false;
+            this.log.info('startup ... done');
         }
-        await this.subscribeObjectsAsync('*');
-        await this.subscribeStatesAsync('*');
     }
 
     /**
@@ -89,7 +89,7 @@ class Boscheasycontrol extends utils.Adapter {
         if (data.type === 'refEnum') {
             const s = data.id.split('/');
             if (s.length === 3 && /[0-9]$/.test(s[2])) {
-                this.log.info('creating device for ' + data.id);
+                this.log.debug('creating device for ' + data.id);
                 await this.setObjectAsync(data.id.substring(1).split('/').join('.'), {
                     type: 'device', common: {
                         name: s[s.length-1]
@@ -178,7 +178,7 @@ class Boscheasycontrol extends utils.Adapter {
                     let common;
                     if (mytype === 'string') {
                         common = {
-                            name: data.id.split('/')[-1],
+                            name: data.id.split('/').slice(-1)[0],
                             type: 'string',
                             read: true,
                             write: Boolean(data.writeable),
@@ -188,7 +188,7 @@ class Boscheasycontrol extends utils.Adapter {
                     }
                     else if (mytype === 'number') {
                         common = {
-                            name: data.id.split('/')[-1],
+                            name: data.id.split('/').slice(-1)[0],
                             type: 'number',
                             read: true,
                             write: Boolean(data.writeable),
@@ -201,7 +201,7 @@ class Boscheasycontrol extends utils.Adapter {
                     }
                     else {
                         common = {
-                            name: data.id.split('/')[-1],
+                            name: data.id.split('/').slice(-1)[0],
                             type: 'string',
                             read: true,
                             write: Boolean(data.writeable),
@@ -213,10 +213,6 @@ class Boscheasycontrol extends utils.Adapter {
                     await this.setObjectAsync(name, {
                         type: 'state', common: common, native: {}
                     });
-                    const obj = await this.getObjectAsync(name);
-                    if (obj) {
-                        await this.onObjectChange(obj._id, obj);
-                    }
                 }
             }
             if (name.endsWith('.name')) {
@@ -294,13 +290,16 @@ class Boscheasycontrol extends utils.Adapter {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
-            switch (obj.common.unit) {
-                case '%':
-                case 'C':
-                    await this.starttimer(id, 120);
-                    break;
-                default:
-                    await this.starttimer(id, 900);
+            if (id.endsWith('.temperatureActual')) {
+                await this.starttimer(id, 300);
+            } else if (id.endsWith('.valvePosition')) {
+                await this.starttimer(id, 300);
+            } else if (obj.common.unit === '%') {
+                await this.starttimer(id, 900);
+            } else if (obj.common.unit === 'C') {
+                await this.starttimer(id, 900);
+            } else {
+                await this.starttimer(id, 1800);
             }
         }
         else {
