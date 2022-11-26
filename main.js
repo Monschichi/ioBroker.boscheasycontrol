@@ -290,23 +290,21 @@ class Boscheasycontrol extends utils.Adapter {
         if (obj) {
             // The object was changed
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
-            if (id.endsWith('.temperatureActual')) {
-                await this.starttimer(id, 300);
-            } else if (id.endsWith('.valvePosition')) {
-                await this.starttimer(id, 300);
-            } else if (obj.common.unit === '%') {
-                await this.starttimer(id, 900);
-            } else if (obj.common.unit === 'C') {
-                await this.starttimer(id, 900);
+            if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
+                if (obj.common.custom[`${this.name}.${this.instance}`].enabled) {
+                    await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`].refresh);
+                } else {
+                    await this.stoptimer(id);
+                }
             } else {
-                await this.starttimer(id, 1800);
+                await this.stoptimer(id);
             }
-        }
-        else {
+        } else {
             // The object was deleted
             this.log.debug(`object ${id} deleted`);
             await this.stoptimer(id);
         }
+        this.log.debug('running timers: ' + Object.keys(this.timers));
     }
 
     /**

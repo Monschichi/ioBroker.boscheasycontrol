@@ -67,5 +67,5 @@
     "test:unit": "mocha test/unit --exit",
     "translate": "translate-adapter"
   },
-  "version": "0.1.5"
+  "version": "0.1.6"
 }
