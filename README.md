@@ -21,6 +21,9 @@ As of now only reading.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* switch back to configurable timers
+
 ### 0.1.3 (2022-11-06)
 * fix logging
 * add dynamic refresh timings
