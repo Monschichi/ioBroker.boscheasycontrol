@@ -116,7 +116,7 @@
       "zh-cn": "\u535a\u4e16 EasyControl"
     },
     "type": "climate-control",
-    "version": "0.1.6"
+    "version": "0.2.0"
   },
   "encryptedNative": [
     "password"
