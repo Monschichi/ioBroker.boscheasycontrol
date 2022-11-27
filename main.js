@@ -30,6 +30,7 @@ class Boscheasycontrol extends utils.Adapter {
         // own variables
         this.initializing = false;
         this.timers = {};
+        this.starttimers = {};
     }
 
     /**
@@ -66,6 +67,7 @@ class Boscheasycontrol extends utils.Adapter {
             await this.processurl('/');
             this.initializing = false;
             this.log.info('startup ... done');
+            this.startalltimers();
         }
     }
 
@@ -237,6 +239,13 @@ class Boscheasycontrol extends utils.Adapter {
         }
     }
 
+    async startalltimers()  {
+        for (const [key, value] of this.starttimers) {
+            this.log.debug('calling starttimer for ' + key + ' interval ' + value);
+            await this.starttimer(key, value);
+        }
+    }
+
     /**
      * @param {string} name
      * @param {number} interval
@@ -293,8 +302,14 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
             if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
                 if (obj.common.custom[`${this.name}.${this.instance}`].enabled) {
-                    this.log.debug('calling starttimer for ' + id);
-                    await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`].refresh);
+                    if (this.initializing) {
+                        this.log.debug('adding timer for start ' + id);
+                        this.starttimers[id] = obj.common.custom[`${this.name}.${this.instance}`].refresh;
+                    }
+                    else {
+                        this.log.debug('calling starttimer for ' + id);
+                        await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`].refresh);
+                    }
                 } else {
                     this.log.debug('calling stoptimer 1 for ' + id);
                     await this.stoptimer(id);
