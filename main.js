@@ -10,7 +10,7 @@ const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
 const {EasyControlClient} = require('bosch-xmpp');
-const {setIntervalAsync, clearIntervalAsync} = require('set-interval-async/dynamic');
+const {setIntervalAsync, clearIntervalAsync} = require('set-interval-async/fixed');
 
 class Boscheasycontrol extends utils.Adapter {
 
@@ -292,11 +292,14 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
             if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
                 if (obj.common.custom[`${this.name}.${this.instance}`].enabled) {
+                    this.log.debug('calling starttimer for ' + id)
                     await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`].refresh);
                 } else {
+                    this.log.debug('calling stoptimer 1 for ' + id)
                     await this.stoptimer(id);
                 }
             } else {
+                this.log.debug('calling stoptimer 2 for ' + id)
                 await this.stoptimer(id);
             }
         } else {
