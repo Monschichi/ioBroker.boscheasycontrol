@@ -323,7 +323,7 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug(`object ${id} deleted`);
             await this.stoptimer(id);
         }
-        this.log.debug('running timers: ' + Object.keys(this.timers));
+        this.log.debug('running timers: ' + Object.keys(this.starttimers));
     }
 
     /**
