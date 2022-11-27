@@ -240,7 +240,7 @@ class Boscheasycontrol extends utils.Adapter {
     }
 
     async startalltimers()  {
-        for (const [key, value] of this.starttimers) {
+        for (const [key, value] of Object.entries(this.starttimers)) {
             this.log.debug('calling starttimer for ' + key + ' interval ' + value);
             await this.starttimer(key, value);
         }
