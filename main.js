@@ -78,6 +78,7 @@ class Boscheasycontrol extends utils.Adapter {
             return;
         }
         let data;
+        this.log.debug('fetching new state for ' + path);
         try {
             data = await this.client.get(path);
         }
@@ -292,14 +293,14 @@ class Boscheasycontrol extends utils.Adapter {
             this.log.debug(`object ${id} changed: ${JSON.stringify(obj)}`);
             if (obj.common.custom && obj.common.custom[`${this.name}.${this.instance}`]) {
                 if (obj.common.custom[`${this.name}.${this.instance}`].enabled) {
-                    this.log.debug('calling starttimer for ' + id)
+                    this.log.debug('calling starttimer for ' + id);
                     await this.starttimer(id, obj.common.custom[`${this.name}.${this.instance}`].refresh);
                 } else {
-                    this.log.debug('calling stoptimer 1 for ' + id)
+                    this.log.debug('calling stoptimer 1 for ' + id);
                     await this.stoptimer(id);
                 }
             } else {
-                this.log.debug('calling stoptimer 2 for ' + id)
+                this.log.debug('calling stoptimer 2 for ' + id);
                 await this.stoptimer(id);
             }
         } else {
