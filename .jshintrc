@@ -1,3 +1,5 @@
 {
-  "esversion": 11
+  "esversion": 11,
+  "mocha": true,
+  "node": true
 }
