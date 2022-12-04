@@ -13,33 +13,21 @@
 
 ## boscheasycontrol adapter for ioBroker
 
-integration of Bosch EasyControl CT200 devices
+Integration of Bosch EasyControl CT200 devices.
 
-As of now only reading.
+Install on cammand line via: `iobroker url Monschichi/ioBroker.boscheasycontrol#v0.1.0` or via expert settings in the UI.
+
+Add your serial, access key and password in adapter config.
+
+As default all objects are created on adpater start, but none are updated. If you want object to update you can activate the refresh via the object specific custom settings.
+Please keep in mind there is a rate limit on the API, so update only the needed objects in the needed intervals. Minimum interval is 1 second, default is 1 hour.
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.2.0 (2022-11-26)
-* switch back to configurable timers
-
-### 0.1.3 (2022-11-06)
-* fix logging
-* add dynamic refresh timings
-* added device names
-
-### 0.1.2 (2022-09-25)
-* (Monschichi) enable setting of values
-
-### 0.1.1 (2022-07-05)
-* (Monschichi) add logging for debugging
-
-### 0.1.0 (2022-07-01)
-* (Monschichi) default refresh every hour
-
-### 0.0.2 (2022-07-01)
+### 0.1.0 (2022-12-04)
 * (Monschichi) initial release
 
 ## License

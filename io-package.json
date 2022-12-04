@@ -47,7 +47,7 @@
     "mode": "daemon",
     "name": "boscheasycontrol",
     "news": {
-      "0.0.1": {
+      "0.1.0": {
         "de": "Erstver\u00f6ffentlichung",
         "en": "initial release",
         "es": "Versi\u00f3n inicial",
@@ -59,45 +59,6 @@
         "ru": "\u041d\u0430\u0447\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0438\u044f",
         "uk": "\u043f\u043e\u0447\u0430\u0442\u043a\u043e\u0432\u0438\u0439 \u0432\u0438\u043f\u0443\u0441\u043a",
         "zh-cn": "\u9996\u6b21\u51fa\u7248"
-      },
-      "0.1.0": {
-        "de": "Standardaktualisierung jede Stunde",
-        "en": "default update every hour",
-        "es": "actualizaci\u00f3n predeterminada cada hora",
-        "fr": "mise \u00e0 jour par d\u00e9faut toutes les heures",
-        "it": "aggiornamento predefinito ogni ora",
-        "nl": "standaard update elk uur",
-        "pl": "domy\u015blna aktualizacja co godzin\u0119",
-        "pt": "atualiza\u00e7\u00e3o padr\u00e3o a cada hora",
-        "ru": "\u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e \u043a\u0430\u0436\u0434\u044b\u0439 \u0447\u0430\u0441",
-        "uk": "\u043e\u043d\u043e\u0432\u043b\u044e\u0432\u0430\u0442\u0438 \u0437\u0430 \u0437\u0430\u043c\u043e\u0432\u0447\u0443\u0432\u0430\u043d\u043d\u044f\u043c \u0449\u043e\u0433\u043e\u0434\u0438\u043d\u0438",
-        "zh-cn": "\u9ed8\u8ba4\u6bcf\u5c0f\u65f6\u66f4\u65b0\u4e00\u6b21"
-      },
-      "0.1.1": {
-        "de": "Protokollierung zum Debuggen hinzuf\u00fcgen",
-        "en": "add logging for debugging",
-        "es": "agregar registro para depuraci\u00f3n",
-        "fr": "ajouter la journalisation pour le d\u00e9bogage",
-        "it": "aggiungi la registrazione per il debug",
-        "nl": "logboekregistratie toevoegen voor foutopsporing",
-        "pl": "dodaj logowanie do debugowania",
-        "pt": "adicionar log para depura\u00e7\u00e3o",
-        "ru": "\u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0436\u0443\u0440\u043d\u0430\u043b\u0430 \u0434\u043b\u044f \u043e\u0442\u043b\u0430\u0434\u043a\u0438",
-        "uk": "\u0434\u043e\u0434\u0430\u0442\u0438 \u0436\u0443\u0440\u043d\u0430\u043b \u0434\u043b\u044f \u043d\u0430\u043b\u0430\u0433\u043e\u0434\u0436\u0435\u043d\u043d\u044f",
-        "zh-cn": "\u6dfb\u52a0\u65e5\u5fd7\u4ee5\u8fdb\u884c\u8c03\u8bd5"
-      },
-      "0.1.2": {
-        "de": "Einstellung von Werten erm\u00f6glichen",
-        "en": "enable setting of values",
-        "es": "permitir la configuraci\u00f3n de valores",
-        "fr": "activer le r\u00e9glage des valeurs",
-        "it": "abilitare l'impostazione dei valori",
-        "nl": "instelling van waarden inschakelen",
-        "pl": "w\u0142\u0105cz ustawianie warto\u015bci",
-        "pt": "habilitar a configura\u00e7\u00e3o de valores",
-        "ru": "\u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0443 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0439",
-        "uk": "\u0434\u043e\u0437\u0432\u043e\u043b\u0438\u0442\u0438 \u0432\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f \u0437\u043d\u0430\u0447\u0435\u043d\u044c",
-        "zh-cn": "\u542f\u7528\u503c\u7684\u8bbe\u7f6e"
       }
     },
     "platform": "Javascript/Node.js",
@@ -116,7 +77,7 @@
       "zh-cn": "\u535a\u4e16 EasyControl"
     },
     "type": "climate-control",
-    "version": "0.2.0"
+    "version": "0.1.0"
   },
   "encryptedNative": [
     "password"
