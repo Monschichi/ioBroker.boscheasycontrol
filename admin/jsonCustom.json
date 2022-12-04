@@ -3,10 +3,10 @@
     "refresh": {
       "default": 3600,
       "help": "refresh interval in seconds",
+      "hidden": "!customObj._id.startsWith('boscheasycontrol.')",
       "label": "Refresh",
       "min": 1,
-      "type": "number",
-      "hidden": "!customObj._id.startsWith('boscheasycontrol.')"
+      "type": "number"
     }
   },
   "type": "panel"

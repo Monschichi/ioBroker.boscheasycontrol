@@ -123,7 +123,7 @@ class Boscheasycontrol extends utils.Adapter {
             case 'stringValue':
             case 'stringArray':
                 mytype = 'string';
-                if (name.endsWith('.name') || name.endsWith('.email') || name.endsWith('.phone')) {
+                if (name.endsWith('.name') || name.endsWith('.email') || name.endsWith('.currency') || name.endsWith('.phone')) {
                     value = Buffer.from(data.value, 'base64').toString();
                 }
                 else {
@@ -135,21 +135,21 @@ class Boscheasycontrol extends utils.Adapter {
                 value = data.value;
                 break;
             case 'systeminfo':
-                mytype = 'string';
+                mytype = 'object';
                 value = JSON.stringify(data.value);
                 break;
             case 'zoneConfigArray':
             case 'zoneArray':
             case 'deviceArray':
             case 'programArray':
-                mytype = 'string';
+                mytype = 'object';
                 for (const i in data.value) {
                     data.value[i].name = Buffer.from(data.value[i].name, 'base64');
                 }
                 value = JSON.stringify(data.value);
                 break;
             case 'addressInfo':
-                mytype = 'string';
+                mytype = 'object';
                 for (const i in data.value) {
                     for (const [key, value] of Object.entries(data.value[i])) {
                         data.value[i][key] = Buffer.from(value, 'base64').toString();
@@ -167,7 +167,7 @@ class Boscheasycontrol extends utils.Adapter {
             case 'dayProgram':
             case 'weekProgram':
             case 'autoAwayArray':
-                mytype = 'string';
+                mytype = 'object';
                 value = JSON.stringify(data.value);
                 break;
         }
@@ -239,7 +239,7 @@ class Boscheasycontrol extends utils.Adapter {
         }
     }
 
-    async startalltimers()  {
+    async startalltimers() {
         for (const [key, value] of Object.entries(this.starttimers)) {
             this.log.debug('calling starttimer for ' + key + ' interval ' + value);
             await this.starttimer(key, value);
