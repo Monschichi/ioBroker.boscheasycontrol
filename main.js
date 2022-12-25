@@ -67,7 +67,7 @@ class Boscheasycontrol extends utils.Adapter {
             await this.processurl('/');
             this.initializing = false;
             this.log.info('startup ... done');
-            this.startalltimers();
+            await this.startalltimers();
         }
     }
 

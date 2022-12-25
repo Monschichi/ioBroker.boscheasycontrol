@@ -2,10 +2,7 @@
 # ioBroker.boscheasycontrol
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Monschichi/ioBroker.boscheasycontrol/main.svg)](https://results.pre-commit.ci/latest/github/Monschichi/ioBroker.boscheasycontrol/main)
-[![NPM version](https://img.shields.io/npm/v/ioBroker.boscheasycontrol.svg)](https://www.npmjs.com/package/ioBroker.boscheasycontrol)
-[![Downloads](https://img.shields.io/npm/dm/ioBroker.boscheasycontrol.svg)](https://www.npmjs.com/package/ioBroker.boscheasycontrol)
 ![Number of Installations](https://iobroker.live/badges/boscheasycontrol-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/boscheasycontrol-stable.svg)
 
 [![NPM](https://nodei.co/npm/ioBroker.boscheasycontrol.png?downloads=true)](https://nodei.co/npm/ioBroker.boscheasycontrol/)
 
