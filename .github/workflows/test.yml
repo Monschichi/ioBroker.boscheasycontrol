@@ -1,0 +1,35 @@
+name: Test
+
+# Run this job on all pushes and pull requests
+# as well as tags with a semantic version
+on:
+  pull_request: {}
+
+jobs:
+  # Performs quick checks before the expensive test runs
+  check-and-lint:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: ioBroker/testing-action-check@v1
+        with:
+          node-version: '18.x'
+          lint: true
+
+  # Runs adapter tests on all supported node versions and OSes
+  adapter-tests:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: ioBroker/testing-action-adapter@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          os: ${{ matrix.os }}
